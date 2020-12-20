@@ -1,0 +1,89 @@
+@charset "UTF-8";
+
+@charset "UTF-8"; 
+/* *{border:1px solid red} */
+   /* 아이디 비밀번호 박스 */
+       input[type=text]{  
+           font-size: 12px;
+           margin: 0 auto;
+           width: 290px;
+           height: 45px;
+           margin-top: 7px; 
+       } 
+       
+       input[type=password]{ 
+           font-size: 12px;
+           margin: 0 auto;
+           width: 290px;
+           height: 45px;
+           margin-top: 5px; 
+       }
+       .login>img{
+            position: absolute; 
+            margin: 13px 17px;
+       }
+          
+       .pw>img{
+           position: absolute;
+           margin: 10px 17px;
+       }
+
+       /* 아이디 비밀번호 박스 끝 */
+
+       /* 자동 로그인 아이디 비밀번호 찾기 박스 */ 
+       .form-check{    
+           margin: 8px;
+           font-size: 10px;   
+           text-align:left;  
+       }
+       .form-check>label{
+           margin: 5px;
+       } 
+       .find>a{  
+         font-size: 10px;    
+         color: black;
+       }
+       .find{
+       	padding-top:5px;
+       	 width:120px;
+       	 float:right;
+       }
+       /* 자동 로그인 아이디 비밀번호 찾기 박스 끝 */
+
+       /* 로그인 회원가입 박스 */
+       .loginDiv3{
+        margin-top: 30px;
+        text-align: center;
+       }
+       .check_btn{
+           margin-top: 8px;
+           text-align: center;
+           color: rgb(53, 53, 53);
+           width: 290px;
+           height: 45px;
+           border-radius: 4px;
+           background-color: #d4b886;
+           border: bisque;
+           font-size: 13px;
+       }
+       
+        /* 로그인 회원가입 박스 끝*/
+       .login_head{
+            font-size: 25px;
+			text-align: center;
+		}
+
+    	.loginWrapper{
+           margin: 0 auto;
+            width: 300px; 
+            margin-top: 100px;
+            margin-bottom: 150px;
+       } 
+       
+       
+      /* 아이디 찾기 */
+      /* *{ border: 1px solid red} */
+
+      .img_box{
+         text-align: center;
+      }

@@ -1,0 +1,25 @@
+@charset "UTF-8";
+/*<!-- 1123수정 -->*/
+/* 내정보 정보 */
+.bookstory_MyInfo_fix{  
+    padding-top:10px;
+    float:right;
+    width: 130px;
+    height: 60px;
+    border-bottom: 3px solid rgb(68, 68, 68);
+} 
+
+.bookstory_MyInfo_fix>a{color:black;} 
+.myInfo_box_profile{
+    position: absolute;
+    width: 100px;
+    margin-top:50px;
+
+}
+.myInfo_box{
+    float: right;
+    padding: 20px 0;
+    width: 150px;
+    height: 200px;
+    text-align: center;
+}

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.study.springboot.dao.IOrderDao"> 
+
+	<insert id="orderwriteDao" parameterType="com.study.springboot.dto.OrderDto" useGeneratedKeys="true" keyProperty="o_number">
+ 	  <selectKey keyProperty="o_number" resultType="int" order="BEFORE">
+		        select book_order_seq.nextval FROM DUAL
+	  </selectKey>
+      insert into book_order (o_number,o_receiver, o_phone, p_number, count, o_orderid,o_price,p_title,p_filename,o_address,o_point,o_memo,o_charge,o_total,o_state,o_charge2,reg, review_state)
+           values (#{o_number},#{o_receiver}, #{o_phone}, #{p_number}, #{count} , #{o_orderid},#{o_price},#{p_title},#{p_filename},#{o_address},#{o_point},#{o_memo},#{o_charge},#{o_total},#{o_state},#{o_charge2},#{reg}, #{review_state})
+	</insert>
+
+    <select id="orderlistDao" resultType="com.study.springboot.dto.OrderDto"> 
+		select * from book_order where o_number = #{param1}
+	</select> 
+	
+	<select id="listDao" resultType="com.study.springboot.dto.OrderDto"> 
+		select * from book_order order by o_number desc
+	</select> 
+	<select id="stateviewDao" resultType="com.study.springboot.dto.OrderDto"> 
+		select * from book_order where o_state =#{param1} order by o_number desc
+	</select> 
+	
+	<update id="stateDao">
+		update book_order set o_state = #{param2} WHERE o_number = #{param1}
+	</update>
+	
+	
+	
+	<delete id="cancelOrderDao">
+		delete From book_order where o_number = #{param1}
+	</delete>
+	
+	 <select id="countReviewDao" resultType="int">
+      select count(*) from book_order where o_orderid=#{param1} and review_state=#{param2} and o_state=#{param3}
+   </select>
+	<select id="reviewToWriteListDao" resultType="com.study.springboot.dto.OrderDto">
+	   <![CDATA[ 
+     select *
+     from ( 
+     select 
+     rownum rn,p_number, p_title,p_writer,o_orderid,reg,o_state,p_filename,review_state
+     from book_order
+     where rownum <= #{cri.pageNum} * #{cri.amount} AND o_orderid=#{id} AND review_state=#{r_state}  AND o_state=#{o_state} 
+     order by reg desc) 
+     where rn > (#{cri.pageNum} -1) * #{cri.amount} AND o_orderid=#{id} AND review_state=#{r_state}  AND o_state=#{o_state}
+     ]]>
+	</select>
+	
+	<select id="countOrderDao" resultType="int">
+    select count(*) from book_order
+    </select>
+	
+	<select id="countMemberOrderDao" resultType="int">
+    select count(*) from book_order where o_orderid=#{param1}
+    </select>
+	<select id="countstateOrderDao" resultType="int">
+    select count(*) from book_order where o_state = #{param1}
+    </select>
+	
+	<select id="listbyUserDao" resultType="com.study.springboot.dto.OrderDto">
+	   <![CDATA[ 
+     select o_number, p_number, p_title, count,o_orderid, o_price,o_receiver, o_address,o_memo,reg,o_state,p_filename
+     from ( 
+     select 
+     rownum rn, o_number, p_number, p_title, count,o_orderid, o_price,o_receiver, o_address,o_memo,reg,o_state,p_filename
+     from book_order
+     where rownum <= #{cri.pageNum} * #{cri.amount} AND o_orderid=#{id} 
+     order by reg desc) 
+     where rn > (#{cri.pageNum} -1) * #{cri.amount} AND o_orderid=#{id} 
+     ]]>
+	</select>
+	
+	<select id="getListWithPaging" resultType="com.study.springboot.dto.OrderDto">
+
+    <![CDATA[ 
+     select o_number, p_number, p_title, count,o_orderid, o_price,o_receiver, o_address,o_memo,reg,o_state
+     from ( 
+     select 
+     rownum rn, o_number, p_number, p_title, count,o_orderid, o_price,o_receiver, o_address,o_memo,reg,o_state
+     from book_order
+     where rownum <= #{pageNum} * #{amount} 
+     order by reg desc) 
+     where rn > (#{pageNum} -1) * #{amount} 
+     ]]>
+    </select>
+    
+   
+</mapper>

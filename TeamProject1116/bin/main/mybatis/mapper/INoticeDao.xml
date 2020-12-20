@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.study.springboot.dao.INoticeDao"> 
+
+<insert id="writeDao" parameterType="com.study.springboot.dto.Notice_Board_Dto">
+ <selectKey keyProperty="idx" resultType="int" order="BEFORE">
+	        select notice_board_seq.nextval FROM DUAL
+	  </selectKey>
+      insert into notice_board (idx, category, n_writer, n_title, n_content,reg)
+           values (#{idx}, #{category}, #{n_writer}, #{n_title}, #{n_content} ,#{reg})
+</insert>
+
+	<select id="listDao" resultType="com.study.springboot.dto.Notice_Board_Dto"> 
+		select * from notice_board where category = #{param1} order by idx desc
+	</select> 
+	 
+	<select id="viewDao" resultType="com.study.springboot.dto.Notice_Board_Dto"> 
+		select * from notice_board where idx = #{param1}
+	</select> 
+	
+	<update id="hitDao">
+		update notice_board set n_Hit = #{param2} WHERE idx = #{param1}
+	</update>
+	
+	<update id="updateDao">
+		update notice_board set n_title = #{n_title}, n_writer = #{n_writer}, 
+		    category = #{category}, n_content = #{n_content} WHERE idx = #{idx}
+	</update>
+
+	<delete id="deleteDao">
+		delete from notice_board where idx = #{param1}
+	</delete>
+	
+	<select id="todayCheckDao" resultType="_int"> 
+	select count(*) from book_member where TO_CHAR(reg,'YY/MM/DD') = #{param1}
+	</select> 
+	<select id="todayCheckDao2" resultType="_int"> 
+	select count(*) from book_product where TO_CHAR(reg,'YY/MM/DD') = #{param1}
+	</select> 
+	<select id="todayCheckDao3" resultType="_int"> 
+	select count(*) from book_order where TO_CHAR(reg,'YY/MM/DD') = #{param1}
+	</select> 
+	<select id="todayCheckDao4" resultType="_int"> 
+	select count(*) from delete_member where TO_CHAR(reg,'YY/MM/DD') = #{param1}
+	</select> 
+	<select id="newCheckDao" resultType="_int"> 
+	select count(*) from book_product_qna where p_answer_state = #{param1}
+	</select> 
+	<select id="newCheckDao2" resultType="_int"> 
+	select count(*) from ONE_TO_ONE_BOARD where O_ANS_CHECK = #{param1}
+	</select> 
+	<select id="newCheckDao3" resultType="_int"> 
+	select count(*) from ONE_TO_ONE_BOARD where O_ANS_CHECK = #{param1} AND (O_TYPE = #{param2} OR O_TYPE = #{param3})
+	</select> 
+	
+	<select id="countOrderDao" resultType="int">
+   select count(*) from notice_board where category = #{param1}
+ </select>
+
+<select id="getListWithPaging" resultType="com.study.springboot.dto.Notice_Board_Dto">
+
+    <![CDATA[ 
+     select *
+     from ( 
+     select 
+     rownum rn, idx,n_writer,n_title,n_hit,reg,category
+     from notice_board
+     where rownum <= #{cri.pageNum} * #{cri.amount} AND category =#{category} 
+     order by idx desc) 
+     where rn > (#{cri.pageNum} -1) * #{cri.amount} AND category =#{category} 
+     ]]>
+
+    </select>
+</mapper>

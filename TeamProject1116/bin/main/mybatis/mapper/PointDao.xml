@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.study.springboot.dao.IPointDao"> 
+
+<insert id="insertPointDao" parameterType="com.study.springboot.dto.PointDto">
+	     <selectKey keyProperty="idx" resultType="int" order="BEFORE">
+           select POINT_seq.nextval FROM DUAL
+     	</selectKey>
+	      insert into POINT (idx, id_member, pt_content, pt_move, pt_result,reg)
+	           values (#{idx}, #{id_member}, #{pt_content}, #{pt_move}, #{pt_result},#{reg})
+	</insert>
+	<insert id="cancelPointDao" parameterType="com.study.springboot.dto.PointDto">
+	     <selectKey keyProperty="idx" resultType="int" order="BEFORE">
+           select POINT_seq.nextval FROM DUAL
+     	</selectKey>
+	      insert into POINT (idx, id_member, pt_content, pt_move, pt_result,reg)
+	           values (#{idx}, #{id_member}, #{pt_content}, #{pt_move}, #{pt_result},#{reg})
+	</insert>
+	
+	<select id="countDao" resultType="int">
+    select count(*) from POINT where id_member=#{param1}
+    </select>
+    
+    <select id="pointListDao" resultType="com.study.springboot.dto.PointDto">
+	   <![CDATA[ 
+     select idx,pt_move,id_member,pt_content,pt_result,reg
+     from ( 
+     select 
+     rownum rn, idx,pt_move,id_member,pt_content,pt_result,reg
+     from POINT
+     where rownum <= #{cri.pageNum} * #{cri.amount} AND id_member=#{id} 
+     order by reg desc) 
+     where rn > (#{cri.pageNum} -1) * #{cri.amount} AND id_member=#{id} 
+     ]]>
+	</select>
+</mapper>

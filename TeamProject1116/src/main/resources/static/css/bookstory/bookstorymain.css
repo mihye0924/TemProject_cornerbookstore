@@ -1,0 +1,346 @@
+@charset "UTF-8"; 
+/*<!-- 1123수정 -->*/
+@font-face {
+  font-family: 'NanumBarunGothic';
+  font-style: normal;
+  font-weight: 400;
+  src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot');
+  src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
+ } 
+ body{
+  font-family:'NanumBarunGothic';
+  
+}  
+ /* 메인 */
+ #main{ 
+     width: 1300px; 
+     margin: 0 auto;   
+     height:1800px;  
+     
+ }
+aside{    
+    width: 270px;
+    position: absolute;
+}
+.hr{
+    margin-top: 50px;
+    height: 1px;
+    border: 1px solid  rgb(68, 68, 68);
+}
+
+.hr2{
+    margin-top: 20px;
+    height: 1px;
+    border: 1px solid  rgb(68, 68, 68);
+}
+
+/* 북스토리,내정보 박스 */
+.info_head{ 
+    padding-top: 15px; 
+    text-align: center; 
+    border-radius: 0;
+} 
+.bookstory_Info>a{color:black;} 
+.bookstory_Info{
+    padding-top:10px;
+    position: absolute;
+    width: 130px;
+    height: 60px;
+} 
+
+.bookstory_Info:hover{
+    border-bottom: 3px solid rgb(68, 68, 68);
+} 
+.bookstory_MyInfo>a{color:black;} 
+.bookstory_MyInfo{  
+    padding-top:10px;
+    float:right;
+    width: 130px;
+    height: 60px;
+}
+.bookstory_MyInfo:hover{  
+    border-bottom: 3px solid rgb(68, 68, 68);
+}
+
+
+.info_box2{
+    padding-top:10px;
+}
+
+.myinfo_text1{
+    padding-right: 10px;
+}
+
+.rank_info{
+    padding-top:30px;
+}
+ 
+
+.info_head>a{
+    padding:0 20px;
+    text-decoration: none;
+    color:black;
+}
+.info_body{ 
+    padding: 44px 0;
+    text-align: center;
+}
+.info-text{
+    height: 80px;
+} 
+.aside_box2 td{
+    padding-top:10px; 
+}
+
+.text_p{
+    padding-left: 20px; 
+}
+
+/* 내정보 */
+.MyInfo_boxsize{
+	padding-top:40px;
+	width:250px;
+	height:320px;
+} 
+
+.myImage{  
+	display:block; 
+	margin:0 auto;
+}
+.myRank_box{   
+	padding-top:10px;   
+	padding-left:50px;
+}  
+.myRank_text{
+	padding-left:10px;
+} 
+/* 글쓰기 */
+input[type=button]{
+    width: 100%;
+    height: 50px;
+    border-radius: 0px;
+    background-color: #d4b886;
+    border: none;
+}
+input[type=button]:hover{
+    background-color:#f0b247;
+}
+/* 검색하기 */
+.navbar_aside{
+    margin-top: 10px;
+}
+.aside_form_box{
+    height: 100px;
+}
+
+/* input[type=search]{
+    margin: 0 auto;
+    width: 60px;
+} */
+button{
+    margin:0 auto
+}
+/* 카테고리 */
+.board_box_category{ 
+    padding-top:15px; 
+    font-size: 20px;
+    margin: 0 10px;
+}
+.board_box_category>a{
+    color: black;
+}
+.category_box td{
+    padding: 5px 5px; 
+}
+.category_box td>a{
+    margin-left: 10px;
+    color: black;
+}
+
+/* 글 */ 
+.book_img{
+    margin-top:70px;
+}
+
+section{ 
+    margin-left: 300px;
+    width: 1000px; 
+}
+.hr3{
+    margin-top: 13px;
+    height: 1px;
+    border: 1px solid  rgb(182, 182, 182);
+}
+
+ 
+.all_view{
+	width:950px;
+      margin-top: 50px;
+}
+.all_view>span{
+    color:black;
+} 
+.all_more{ 
+	 
+	float: right;
+}
+
+.all_more>span{
+	position: absolute;
+	color:black; 
+}
+
+ 
+/* 이미지-버전*/
+.section_content{
+    padding-top: 10px;
+    height: 370px;
+    overflow: hidden;
+} 
+.section_content2{
+    padding-top: 10px;
+    height: 700px;
+    overflow: hidden;
+}
+
+.section_box{ 
+    padding:0 5px; 
+
+}
+.content_box{
+	display:table;
+    height: 60x;
+}
+.section_title{
+	width:190px;
+	text-align:center;
+   	padding-top:10px;
+    font-size:13px;
+}
+
+.section_id{
+	width:190px;
+	text-align:center;
+    padding-top:8px;
+    font-size: 15px;
+}
+.section_title>a { 
+	
+	font-size:15px;
+    color:black;
+}
+
+.section_id>a{  
+	font-size:13px;
+    color:black;
+}
+.introduction_nopic{
+	work-break:break-all;
+}
+
+/* 글-버전 */
+.view_box tr th{  
+    height: 5px; 
+}  
+
+/* 북스토리 프로필 */
+.profile_img>a{
+     display: block;
+     text-align: center;
+     margin-bottom: 10px;
+     font-size: 30px;
+ }
+
+.profile_box{
+    margin:0 auto;
+    width: 300px;
+    height: 800px;
+   
+}
+
+.profile{
+    background-color: rgb(239, 239, 239);
+    border:1px solid rgb(222, 222, 222);
+    border-radius: 10px;
+    padding-top:50px;
+    margin-top:100px;
+    width: 300px; 
+    height: 500px;
+    vertical-align: middle;
+   
+}
+
+.profile_img{
+   
+    margin: 0 auto;
+    width: 200px;
+    height: 200px;
+}
+ 
+.img_upload{
+    margin-top: 80px;
+    padding-left: 30px; 
+}
+
+.register{
+    padding-top:50px;
+    padding-left: 70px; 
+}
+
+
+/* 북스토리 정보 */
+.read_rank_box{ 
+    padding: 50px;
+}
+.read_rank{
+    font-size: 30px;
+}
+
+.rank_text_box{
+    margin-left: 65px;
+    width:880px;
+    height: 150px;
+    background-color: rgb(235, 235, 235);
+}
+
+.rank_text1{
+    padding-left: 70px;
+    padding-top:25px;
+}
+.rank_text2{
+    padding-top:10px;
+}
+.dropdown_rankConditional{
+    margin-left: 65px;
+    width:880px;
+}    
+  
+.writer_info_box div{ 
+ 
+	height:300px;
+	position:relative;
+	display: contents;  
+ 	 overflow:hidden;  
+	 text-overflow: ellipsis;
+	 
+}  
+.view_box_1 p{
+	width:500px;
+}
+.prev_img{   
+	width:1100px;
+	display: flex;
+}
+.prev_img tr td{
+	padding-bottom:10px;
+	display: inline-block;
+}
+
+.footer{
+	position: absolute;
+	width: 100%;
+	display: block;
+}
+
+ 
+ 

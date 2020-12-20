@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.study.springboot.dao.IMemberDao"> 
+ <!--ㅎ  -->
+	<insert id="insertMemberDao" parameterType="com.study.springboot.dto.MemberDto">
+	  	<selectKey keyProperty="idx" resultType="int" order="BEFORE">
+           select book_member_seq.nextval FROM DUAL
+     	</selectKey>
+	      insert into book_member (idx, id, password, name, phone, mail1, mail2, address1, address2, address3, address4, book_profile,point, reg, rank )
+	           values (#{idx}, #{id}, #{password}, #{name}, #{phone}, #{mail1}, #{mail2}, #{address1},#{address2},#{address3},#{address4},#{book_profile},#{point},#{reg},#{rank})
+	</insert>
+	
+	<select id="idCheckDao" resultType="String" >
+	      select id from book_member where id = #{param1}
+	</select>
+	
+ 	<select id="loginCheckDao" resultType="_int" >
+    	select count(*) from book_member where id = #{param1} and password = #{param2}
+    </select>
+	
+	<select id="getUserInfoDao" resultType="com.study.springboot.dto.MemberDto"> 
+		select * from book_member where id = #{id}
+	</select>
+	
+	<update id="updateMemberDao" parameterType="com.study.springboot.dto.MemberDto" >
+        update book_member set password = #{password}, mail1 =  #{mail1}, mail2 =  #{mail2},  phone =  #{phone},  address1 = #{address1}, address2 = #{address2}, address3 = #{address3}, address4 = #{address4} where id = #{id}
+    </update>
+   
+    <delete id="deleteMemberDao">
+   		delete from book_member where id = #{param1} and password = #{param2}
+    </delete> 
+	<delete id="deleteMemberDao2">
+   		delete from book_member where id = #{param1}
+    </delete> 
+	<insert id="insertComplainDao" parameterType="com.study.springboot.dto.Delete_MemberDto" >
+	       <selectKey keyProperty="idx" resultType="int" order="BEFORE">
+			        select delete_member_seq.nextval FROM DUAL
+		 </selectKey>
+	      insert into delete_member (idx,session_id,complain_radio, complain_text,reg)
+	           values (#{idx},#{session_id}, #{complain_radio}, #{complain_text},#{reg})
+	</insert> 
+	
+	<select id="idFindCheckDao" resultType="String" >
+	      	select id from book_member where name = #{param1, jdbcType=VARCHAR} and mail1 = #{param2, jdbcType=VARCHAR} and mail2 = #{param3, jdbcType=VARCHAR}
+	</select> 
+	 
+	<select id="pwEmailFindCheckDao" resultType="com.study.springboot.dto.MemberDto">
+	    select * from book_member where name = #{name, jdbcType=VARCHAR} and id = #{id, jdbcType=VARCHAR} and mail1 = #{mail1, jdbcType=VARCHAR} and mail2 = #{mail2, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="pwCheckDao" resultType="com.study.springboot.dto.MemberDto">
+	    select * from book_member where  name = #{name, jdbcType=VARCHAR} and id = #{id, jdbcType=VARCHAR} and mail1 = #{mail1, jdbcType=VARCHAR} and mail2 = #{mail2, jdbcType=VARCHAR}
+	</select>
+
+	<update id="pointUpdateDao" parameterType="com.study.springboot.dto.MemberDto" >
+        update book_member set point = point + #{param1} where id = #{param2}
+    </update>
+    
+    <select id="listDao" resultType="com.study.springboot.dto.MemberDto"> 
+		select * from book_member order by reg desc
+	</select> 
+	
+	<insert id="writeReviewDao" parameterType="com.study.springboot.dto.Review_Board_Dto">
+		 <selectKey keyProperty="idx" resultType="int" order="BEFORE">
+			        select book_review_seq.nextval FROM DUAL
+		 </selectKey>
+	   insert into book_review (idx, o_orderid, o_number, p_title, p_writer, p_number, description, p_filename, rate, reg) 
+	   values (#{idx}, #{o_orderid},#{o_number}, #{p_title}, #{p_writer}, #{p_number}, #{description}, #{p_filename}, #{rate}, #{reg}) 
+	</insert>
+	<select id="countReviewCompleteDao" resultType="int">
+      select count(*) from book_review where o_orderid=#{param1}
+   </select>
+	<select id="viewWrittenReviewDao" resultType="com.study.springboot.dto.Review_Board_Dto">
+		  <![CDATA[ 
+     select *
+     from ( 
+     select 
+     rownum rn,idx,description,p_title,rate,reg,o_orderid,p_number,o_number,p_filename,p_writer
+     from book_review
+     where rownum <= #{cri.pageNum} * #{cri.amount} AND o_orderid=#{id}
+     order by idx desc) 
+     where rn > (#{cri.pageNum} -1) * #{cri.amount} AND o_orderid=#{id}
+     ]]>
+	</select>
+	
+	<select id="reviewlistDao" resultType="com.study.springboot.dto.Review_Board_Dto">
+		select * from book_review order by idx desc
+	</select>
+
+	<update id="changeReviewStateDao">
+		update book_order set review_state=#{param1} where o_number=#{param2}
+	</update> 
+	
+	<select id="SearchOrderDao" resultType="com.study.springboot.dto.OrderDto">
+		select * from book_order where reg between to_date(#{param1},'yyyy-mm-dd')
+		and to_date(#{param2},'yyyy-mm-dd')
+	</select>
+	
+	<select id="AutologinCheckDao" resultType="_int" >
+    	select count(*) from book_member where id = #{param1} and password = #{param2}
+    </select> 
+   
+   <select id="searchMemberDao" resultType="com.study.springboot.dto.MemberDto"> 
+		
+		select * from book_member
+		<choose>
+		<when test='param1.equals("") and param2.equals("") and param3.equals("") '>
+		where name Like '%'||#{param4}||'%' order by idx desc
+		</when>
+		<when test='param1.equals("") and param2.equals("") and param4.equals("") '>
+		where id Like '%'||#{param3}||'%' order by idx desc
+		</when>
+		<when test='param3.equals("") and param4.equals("")'>
+		 <![CDATA[
+        where reg >= #{param1} AND reg-1 <= #{param2}
+        ]]>
+		</when>
+		<when test='param1.equals("") and param2.equals("")'>
+		where id Like '%'||#{param3}||'%' and name Like '%'||#{param4}||'%' order by idx desc
+		</when>
+		<when test='param3.equals("")'>
+		<![CDATA[
+        where reg >= #{param1} AND reg-1 <= #{param2}
+        ]]> AND name Like '%'||#{param4}||'%' order by idx desc
+		</when>
+		<when test='param4.equals("")'>
+		<![CDATA[
+        where reg >= #{param1} AND reg-1 <= #{param2}
+        ]]> AND id Like '%'||#{param3}||'%' order by idx desc
+		</when>
+		</choose>
+	</select>
+	
+	<select id="countMemberDao" resultType="int">
+		select count(*) from book_member
+	</select>
+	
+	 <select id="getListWithPaging" resultType="com.study.springboot.dto.MemberDto">
+
+    <![CDATA[ 
+     select reg, id, password, name, phone, address1, address2, address3, address4,mail1, mail2,rank
+     from(
+     select 
+     rownum rn, reg, id, password, name, phone, address1, address2, address3, address4,mail1, mail2,rank
+     from book_member
+     where rownum <= #{pageNum} * #{amount} 
+     order by rn desc) 
+     where rn > (#{pageNum} -1) * #{amount} 
+     ]]>
+
+    </select>
+    
+    <delete id="deleteReviewDao">
+   		delete from book_review where idx = #{param1}
+    </delete> 
+    
+    <update id="changeReviewState">
+    update book_order set review_state=0 where o_number = #{param1}
+    </update>
+	
+	<select id="deletelistDao" resultType="com.study.springboot.dto.Delete_MemberDto">
+
+<![CDATA[ 
+     select *
+     from ( 
+     select 
+     rownum rn, idx,session_id,complain_radio,complain_text,reg
+     from delete_member
+     where rownum <= #{pageNum} * #{amount} 
+     order by reg desc) 
+     where rn > (#{pageNum} -1) * #{amount}
+     ]]>
+</select>
+	
+	<select id="countDeleteDao" resultType="int">
+	select count(*) from delete_member
+	 </select>
+	
+	<select id="modifyReviewFormDao" resultType="com.study.springboot.dto.Review_Board_Dto">
+	select * from book_review where idx=#{param1}
+	</select>
+	
+	<update id="modifyReviewDao" parameterType="com.study.springboot.dto.Review_Board_Dto">
+	update book_review set rate = #{rate}, description = #{description}, p_filename = #{p_filename}, reg = #{reg} where idx = #{idx}
+	</update>
+	
+	
+	<!-- 북스토리 회원정보 가져오기 -->
+	<select id="memberManageDao" resultType="com.study.springboot.dto.MemberDto">
+		select * from book_member
+	</select>
+	
+	<update id="updateRankDao" parameterType="com.study.springboot.dto.MemberDto" >
+        update book_member set rank=#{param2} where id = #{param1}
+    </update>
+	
+	<update id="update_content_countDao" parameterType="com.study.springboot.dto.MemberDto">
+		   update book_member set content_count= content_count+1 where id=#{id}
+    </update>
+      
+	<update id="update_reply_countDao" parameterType="com.study.springboot.dto.MemberDto">
+		   update book_member set reply_count= reply_count+1 where id=#{id}
+    </update>
+    
+    <update id="delete_content_countDao" parameterType="com.study.springboot.dto.MemberDto">
+		   update book_member set content_count= content_count-1 where id=#{id}
+    </update> 
+    
+    <update id="delete_reply_countDao" parameterType="com.study.springboot.dto.MemberDto">
+		   update book_member set reply_count= reply_count-1 where id=#{id}
+    </update> 
+    
+    
+     
+    <select id="rankstateDao" resultType="com.study.springboot.dto.MemberDto"> 
+			  
+			select * from book_member where
+		 	 
+			<choose> 
+			<when test="param1.equals('20')">  
+				   20 <![CDATA[<=]]> content_count and  content_count  <![CDATA[<]]> 40   
+				and  20   <![CDATA[<=]]>  reply_count  and  reply_count   <![CDATA[<]]> 40  order by idx desc 
+			</when>  
+			<when test="param1.equals('40')">  
+				   40 <![CDATA[<=]]> content_count and  content_count  <![CDATA[<]]> 60   
+				and 40   <![CDATA[<=]]>  reply_count  and  reply_count   <![CDATA[<]]> 60  order by idx desc 
+			</when> 
+			<when test="param1.equals('60')">  
+				   60 <![CDATA[<=]]> content_count and  content_count  <![CDATA[<]]> 80  
+				and  60   <![CDATA[<=]]>  reply_count  and  reply_count   <![CDATA[<]]> 80  order by idx desc 
+			</when> 
+			<when test="param1.equals('80')">  
+				   80 <![CDATA[<=]]> content_count and  content_count  <![CDATA[<]]> 100   
+				and  80   <![CDATA[<=]]>  reply_count  and  reply_count   <![CDATA[<]]> 100  order by idx desc 
+			</when> 
+			<when test="param1.equals('100')">  
+				   100 <![CDATA[<=]]> content_count  and  100   <![CDATA[<]]>  reply_count  order by idx desc 
+			</when>  
+			</choose>
+			  
+	</select>
+    
+    
+</mapper>

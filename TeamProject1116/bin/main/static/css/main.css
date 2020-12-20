@@ -1,0 +1,326 @@
+@font-face {
+  font-family: 'NanumBarunGothic';
+  font-style: normal;
+  font-weight: 400;
+  src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot');
+  src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
+ }
+
+ body{
+  font-family:'NanumBarunGothic';
+} 
+
+*{
+  margin:0; padding:0;
+}
+#top_clone {
+  display: block; 
+  width: 100%;
+  height: 140px; 
+  background: black;  
+  color: #fff;
+}
+
+#top{
+  position: fixed; 
+  width: 100%; 
+  position: relative;  
+  z-index: 999;
+}
+
+/* 배너 */
+.banner {
+	z-index:999;
+  position: fixed;
+  width: 100%;
+  height: 140px; 
+  background: #d4b886; 
+  color: #fff;
+}
+/* 상단 */
+.container { 
+  max-width: 800px;
+  margin: auto;
+}
+
+.top_nav{
+  padding: 5px;
+  text-align: right;
+}
+.top_nav > a{ 
+  padding-right:8px ;
+  text-decoration: none;
+  font-size: 13px;  
+  color: rgb(40, 40, 40);
+} 
+.logo{  
+  padding-top: 3px ;
+  text-align: left; 
+}  
+.navbar_search{
+  vertical-align: middle;
+  width: 230px;
+  height: 47px;
+  float: right;
+}
+input[type=search]{  
+  background-color: rgb(243, 243, 243); 
+  font-size:14px;
+  width: 170px;
+  height: 35px; 
+  border: none; 
+  border-radius: 20px; 
+  color:rgb(155, 155, 155);
+  padding-left: 40px;
+} 
+
+.search_click{ 
+  position: absolute; 
+}
+
+input[type=submit]{
+ text-align: right;
+}
+ 
+/* 네비바 */  
+.login_before>a{
+  color:black;
+  margin: 3px;
+  font-size: 12px; 
+}
+
+.login_notice_btn>span{
+   color:black;
+   font-size: 12px; 
+}
+
+.login_state>a{
+  color:black;
+  margin: 3px;
+  font-size: 12px;
+}
+
+.notice_dropdown{ 
+	width:60px;
+	font-size:12px;
+}
+
+.member_dropdown{
+	width:60px;
+	font-size:12px;
+}
+
+.dropdown-menu{  
+  background-color: black; 
+  opacity: 0.7;
+}
+.dropdown-menu>a{ 
+  color: white; 
+}  
+.navigation{   
+ position: relative;
+ text-align: center;
+} 
+.navbar{  
+  display: inline-flex;
+  margin:0 auto;
+}
+.nav-link > span{
+  font-size: 13px;
+  text-decoration: none;
+  color: rgb(40, 40, 40);
+  
+  margin:0 10px;
+}
+
+/* 메인 */
+#main{
+  padding-top:140px; 
+} 
+
+/* 도서폼 nav */
+#wrapper{
+  padding-top:50px ; 
+}
+
+.new_book>span{ 
+  color: rgb(40, 40, 40);
+  font-size: 30px;  
+}
+
+.owl-theme{ 
+  position: absolute;
+  padding-top: 10px;
+}
+
+.title{
+  position: absolute;
+ 
+}
+.title>div{
+  visibility: hidden;
+} 
+
+.title:hover>div{ 
+  visibility: inherit; 
+  padding: 10px;
+  font-size: 10px; 
+  color: white; 
+}   
+.title:hover{
+  position: absolute;
+  background-color: black;
+  width: 151px;
+  height: 222px;
+  opacity: 0.8;
+} 
+
+/* section 후기 */
+
+.flex{
+  display: flex; 
+}
+
+.review_import{
+  padding-top:50px;  
+  font-size: 30px;    
+} 
+
+.head_review{
+  width: 390px;
+  padding-bottom: 10px;
+} 
+ .pre_img{
+   display: flex;
+ }
+.review_box{
+  float:right; 
+  margin-top:18px;
+  padding-right: 20px;
+  font-size:13px; 
+}  
+.review_box>a{
+  text-decoration: none;
+  color:black;
+}
+
+.review_box_width{
+  width: 130px;
+  height: 120px;
+  margin: 3px;
+}
+.review_box_width1{
+	font-size: 0.8ch;
+	
+}
+
+.table_review{   
+  font-size: 10px;
+  border: 1px solid rgb(40, 40, 40);
+} 
+
+.table_review>td{
+  padding: 5px 34px;
+} 
+/* 후기끝 */
+/* 공지사항 */
+
+.notice_import{ 
+  padding-top:50px;  
+  font-size: 30px;    
+}  
+.notice{
+  width: 390px;
+  height: 215px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+} 
+ 
+.notice_box{
+  float:right; 
+  margin-top:18px; 
+  padding-right: 20px;
+  font-size:13px; 
+}
+ 
+.notice_box>a{
+  text-decoration: none;
+  color:black;
+}
+/* 공지사항끝 */
+/* 배너이미지 */
+.banner_img{
+  /* border:1px solid red; */
+  margin-top:10px;
+  width: 384px;
+  height: 150px;
+}
+ 
+/* footer */
+/* 대표전화, 계좌번호 */
+.footer_text{
+  padding-top:30px;
+}
+ .information{  
+   width: 230px;
+   height:150px;
+ }
+ .phone_num{ 
+   font-size: 16px;  
+ } 
+ 
+ .custom_phone{ 
+  font-size: 30px; 
+  padding-top:30px;
+} 
+
+ .custom_phone{ 
+   font-size: 30px; 
+ } 
+.info_time{
+  padding-top: 25px;
+  font-size: 12px; 
+}  
+ 
+
+.vl2{
+  border: 1px solid rgba(255, 255, 255, 0.496); 
+} 
+.read_bank{
+  font-size: 12px;  
+}
+
+/* 회사소개 --- */ 
+.company_self>span>a{
+  font-size: 12px;
+  text-decoration: none; 
+  color: black;
+  text-align: left;
+}
+
+.company_self2>span{
+  font-size: 12px;
+  text-decoration: none;  
+  text-align: left;
+}
+.top_main{  
+ float: right;
+ padding-bottom: 10px;
+}
+
+.top_main>a{ 
+  color:black;
+  display:block;
+  font-size: 15px; 
+  text-decoration: none;
+  text-align: right; 
+}
+.top_main:hover>a{
+  color:#d4b886;  
+  text-decoration: none;  
+}
+  
+ footer {  
+   padding-top:30px;
+  font-size: 14px;
+}   

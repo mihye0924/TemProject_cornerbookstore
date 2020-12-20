@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.study.springboot.dao.IProductDao">
+
+  <insert id="uploadProductDao" parameterType="com.study.springboot.dto.ProductDto">
+      <selectKey keyProperty="idx" resultType="int" order="BEFORE">
+	        select book_idx_seq.nextval FROM DUAL
+	  </selectKey>
+	  insert into book_product (idx, p_number, p_title, p_writer, p_price, p_discount_ratio,
+	   p_category, p_category2, p_content, p_filename, p_filename2, p_stock, reg)
+      values (#{idx}, #{p_number}, #{p_title}, #{p_writer}, #{p_price}, #{p_discount_ratio},
+      #{p_category}, #{p_category2}, #{p_content}, #{p_filename}, #{p_filename2}, #{p_stock}, #{reg})
+  </insert>
+  
+  <select id="ProductnumCheckDao" resultType="int">
+  	select NVL(p_number,0) from book_product where p_number = #{p_number}
+  </select>
+  
+  <select id="productListDao"  resultType="com.study.springboot.dto.ProductDto">
+	select * from book_product order by idx desc
+  </select>
+  
+  <update id="modifyProductDao">
+      update book_product set p_title = #{p_title}, p_writer = #{p_writer}, 
+      p_price = #{p_price}, p_discount_ratio = #{p_discount_ratio}, p_category = #{p_category},
+      p_category2 = #{p_category2}, p_stock = #{p_stock}, p_content = #{p_content},
+      p_filename = #{p_filename}, p_filename2 = #{p_filename2}
+      where p_number = #{ p_number }
+  </update>
+   
+   <select id="viewProductDetailDao" parameterType="int" resultType="com.study.springboot.dto.ProductDto">
+    select * from book_product where p_number=#{param1}
+   </select>
+   
+   <delete id="DeleteProduct">
+    delete from book_product where idx=#{param1}
+   </delete>
+   
+   <select id="bookCategory1Dao" resultType="com.study.springboot.dto.ProductDto">
+   select * from book_product where p_category = #{param1}
+   </select>
+   
+   <select id="bookCategory2Dao" resultType="com.study.springboot.dto.ProductDto">
+   select * from book_product where p_category2 = #{param1}
+   </select>
+  
+  
+   <insert id="ProductQnABoardDao" parameterType="com.study.springboot.dto.Product_QnA_Board_Dto">
+     <selectKey keyProperty="idx" resultType="int" order="BEFORE">
+	        select book_qna_seq.nextval FROM DUAL
+	 </selectKey>
+     insert into book_product_qna (idx, p_number, p_title, p_writer, id, p_content, p_answer_state, reg) 
+     values(#{idx}, #{p_number}, #{p_title}, #{p_writer}, #{id}, #{p_content}, #{p_answer_state}, #{reg})
+  
+   </insert>
+   
+   <select id="viewProductQnABoardDao" parameterType="int" resultType="com.study.springboot.dto.Product_QnA_Board_Dto">
+    select * from book_product_qna where p_number = #{param1} order by idx desc
+   </select>
+   
+    <select id="viewProductQnABoardDao2" parameterType="int" resultType="com.study.springboot.dto.Product_QnA_Board_Dto">
+    select * from book_product_qna where idx = #{param1} order by idx desc
+   </select>
+   
+   <select id="viewAllProductQnABoardDao" resultType="com.study.springboot.dto.Product_QnA_Board_Dto">
+    select * from book_product_qna order by idx desc
+   </select>
+   
+   <update id="AnswerProductQuestionDao">
+    update book_product_qna set p_answer = #{param1}, p_answer_state = #{param2} where idx = #{param3}
+   </update>
+   
+   <update id="ProductAnswerDeleteDao">
+    update book_product_qna set p_answer = '' ,p_answer_state = #{param2} where idx=#{param1}
+   </update>
+   
+   <insert id="CartDao" parameterType="com.study.springboot.dto.CartDto">
+      <selectKey keyProperty="idx" resultType="int" order="BEFORE">
+	        select cart_idx_seq.nextval FROM DUAL
+	  </selectKey>
+   insert into book_cart (idx, p_number, product_number, p_title, p_writer,p_price, p_discount_ratio, user_id, p_filename, reg)
+   values (#{idx},#{p_number},#{product_number},#{p_title}, #{p_writer}, #{p_price}, #{p_discount_ratio}, #{user_id},#{p_filename}, #{reg})
+   </insert>
+   
+   <select id="getCartDao" resultType="com.study.springboot.dto.CartDto">
+    <![CDATA[ 
+     select *
+     from ( 
+     select 
+     rownum rn, idx, p_number, product_number, p_title, p_writer,p_price, p_discount_ratio, user_id, p_filename, reg
+     from book_cart
+     where rownum <= #{cri.pageNum} * #{cri.amount} AND user_id =#{id} 
+     order by idx desc) 
+     where rn > (#{cri.pageNum} -1) * #{cri.amount} AND user_id =#{id} 
+     ]]>
+   </select>
+   <select id="countCartDao" resultType="int">
+   select count(*) from book_cart where user_id = #{param1}
+ </select>
+   
+   <delete id="deleteCartDao">
+   delete from book_cart where idx=#{param1}
+   </delete>
+   
+   <select id="productReviewListDao"  resultType="com.study.springboot.dto.Review_Board_Dto">
+   select * from book_review where p_number = #{param1} order by idx desc
+   </select>
+   
+ <select id="getListWithPaging" resultType="com.study.springboot.dto.ProductDto">
+
+    <![CDATA[ 
+		SELECT
+		    *
+		FROM
+		    (
+		        SELECT
+		            A.*,
+		            ROWNUM AS RNUM
+		        FROM
+		            (
+		                SELECT
+		                    *
+		                FROM
+		                    book_product
+		                ORDER BY
+		                    idx desc
+		            ) A
+		        WHERE
+		            ROWNUM <= #{pageNum} * #{amount}
+		    )
+		WHERE
+		    RNUM > (#{pageNum} - 1 ) * #{amount}
+     ]]>
+
+    </select>
+    
+    <select id="countProductDao" resultType="int">
+    select count(*) from book_product
+    </select>
+    
+    <select id="SearchProductDao" resultType="com.study.springboot.dto.ProductDto">
+    select * from book_product
+    	<choose>
+    	<when test='param1.equals("p_writer")'>
+    	where p_writer like '%'||#{param2}||'%' order by p_title desc
+    	</when>
+    	<when test='param1.equals("p_title")'>
+    	where p_title like '%'||#{param2}||'%' order by p_title desc
+    	</when>
+    	</choose>
+    </select>
+    
+    <select id="CountSearchProductDao" resultType="int">
+     select count(*) from book_product
+    	<choose>
+    	<when test='param1.equals("p_writer")'>
+    	where p_writer like '%'||#{param2}||'%' order by p_title desc
+    	</when>
+    	<when test='param1.equals("p_title")'>
+    	where p_title like '%'||#{param2}||'%' order by p_title desc
+    	</when>
+    	</choose>
+    </select>
+    
+	<select id="BookSearchDao" resultType="com.study.springboot.dto.ProductDto">
+    select * from book_product where p_writer like '%'||#{param1}||'%' or p_title like '%'||#{param1}||'%' order by p_title desc
+    </select>
+   
+   <select id="getAllBookDao" resultType="com.study.springboot.dto.ProductDto">
+
+	<![CDATA[ 
+	select idx, p_number, p_filename, p_category, p_category2, p_title, p_writer, p_price from 
+	( select 
+	rownum rn, idx, p_number,p_filename,p_category, p_category2, p_title, p_writer, p_price 
+	from book_product
+	where rownum <= #{pageNum} * #{amount} order by p_number desc)
+	where rn > (#{pageNum} -1) * #{amount} 
+	 ]]>
+	
+	</select>
+	<select id="countMyProductQnADao" resultType="int">
+      select count(*) from book_product_qna where id=#{param1}
+   </select>
+	<select id="myProductQnAListDao" resultType="com.study.springboot.dto.Product_QnA_Board_Dto">
+	<![CDATA[ 
+     select *
+     from ( 
+     select 
+     rownum rn, idx,p_number,p_content,reg,id,p_answer,p_answer_state,p_title,p_writer
+     from book_product_qna
+     where rownum <= #{cri.pageNum} * #{cri.amount} AND id=#{id}
+     order by idx desc) 
+     where rn > (#{cri.pageNum} -1) * #{cri.amount} AND id=#{id}
+     ]]>
+	</select>
+	
+	<select id="SearchmyProductQnADao" resultType="com.study.springboot.dto.Product_QnA_Board_Dto">
+    select * from book_product_qna
+    	<choose>
+    	<when test='param1.equals("p_writer")'>
+    	where p_writer like '%'||#{param2}||'%' and id=#{param3} order by idx desc
+    	</when>
+    	<when test='param1.equals("p_title")'>
+    	where p_title like '%'||#{param2}||'%' and id=#{param3} order by idx desc
+    	</when>
+    	<when test='param1.equals("p_content")'>
+    	where p_content like '%'||#{param2}||'%' and id=#{param3} order by idx desc
+    	</when>
+    	</choose>
+    </select>
+    
+    <select id="myProductQnAListDao2" resultType="com.study.springboot.dto.Product_QnA_Board_Dto">
+    select * from book_product_qna where id=#{param1} order by reg desc
+    </select>
+    
+    <select id="noAnswerQnADao" resultType="com.study.springboot.dto.Product_QnA_Board_Dto">
+ 	    select * from book_product_qna where id = #{param1} and p_answer_state=#{param2} order by idx desc
+    </select>
+
+	<select id="MyProductQnAViewDao" resultType="com.study.springboot.dto.Product_QnA_Board_Dto">
+		select * from book_product_qna where idx = #{param1}
+	</select>
+	
+	<select id="onetoonelistDao" resultType="com.study.springboot.dto.OnetoOneBoardDto">
+	select * from one_to_one_board where user_id=#{param1} order by reg desc
+	</select>
+	
+	<delete id="DeleteMyProductQnADao">
+	delete from book_product_qna where idx=#{param1}
+	</delete>
+	
+	
+	
+	<select id="getListWithPaging2Dao" resultType="com.study.springboot.dto.Product_QnA_Board_Dto">
+    <![CDATA[ 
+     select idx, p_number, p_content, id, reg, p_answer_state
+     from ( 
+     select 
+     rownum rn, idx, p_number, p_content, id, reg, p_answer_state
+     from book_product_qna
+     where rownum <= (select count(*) from book_product_qna)+7-#{pageNum} * #{amount} 
+     order by idx desc)  
+     where rn > (select count(*) from book_product_qna)-#{pageNum} * #{amount}
+     ]]>
+    </select>
+    
+    <select id="countProduct2Dao" resultType="int">
+    select count(*) from book_product_qna
+    </select>
+    
+    <select id="noAnswerProductQnaDao" resultType="com.study.springboot.dto.Product_QnA_Board_Dto">
+    select * from book_product_qna where p_answer_state=#{param1} order by idx desc
+    </select>
+    
+    <select id="searchProductQnAAdminDao" resultType="com.study.springboot.dto.Product_QnA_Board_Dto">
+     select * from book_product_qna
+    	<choose>
+    	<when test='param1.equals("1")'>
+    	where p_number like '%'||#{param2}||'%' order by p_title desc
+    	</when>
+    	<when test='param1.equals("2")'>
+    	where p_content like '%'||#{param2}||'%' order by p_title desc
+    	</when>
+    	<when test='param1.equals("3")'>
+    	where id like '%'||#{param2}||'%' order by p_title desc
+    	</when>
+    	</choose>
+    </select>
+   
+   
+</mapper> 

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.study.springboot.dao.IBookStoryBoardDao">
+ 
+ <!-- 북스토리 프로필 삽입 -->
+ 	<select id="bookstory_searchDao" resultType="com.study.springboot.dto.BookStoryBoardDto">
+    select * from bookstory_board where bs_user_id like '%'||#{param1}||'%' or bs_title like '%'||#{param1}||'%' or  bs_content like '%'||#{param1}||'%' or  bs_category like '%'||#{param1}||'%'order by bs_user_id desc
+    </select>
+    
+ 
+   <update id="uploadProfileDao" parameterType="com.study.springboot.dto.MemberDto">
+      update book_member set book_profile=#{book_profile} where id=#{id}
+   </update>
+  
+     <select id="getProfileDao" resultType="com.study.springboot.dto.MemberDto" parameterType="com.study.springboot.dto.MemberDto">
+         select * from book_member where id = #{id}  
+      </select>
+   
+    <select id="getMainfileDao" resultType="com.study.springboot.dto.MemberDto" parameterType="com.study.springboot.dto.MemberDto">
+            select * from book_member 
+    </select>
+      
+      
+   <insert id="bookstoryWriteDao" parameterType="com.study.springboot.dto.BookStoryBoardDto">
+        <selectKey keyProperty="idx" resultType="int" order="BEFORE">
+           select bookstory_board_seq.nextval FROM DUAL
+        </selectKey>
+         insert into bookstory_board (idx, bs_category, bs_user_id, bs_title, bs_content, profile_img, reg )
+              values (#{idx}, #{bs_category}, #{bs_user_id}, #{bs_title}, #{bs_content}, #{profile_img}, #{reg})
+   </insert> 
+   
+    <update id="bookstoryHitDao" parameterType="_int">
+          update bookstory_board set hit= hit+1 where idx=#{idx} 
+    </update>
+     
+    <select id="bookstoryViewDao" resultType="com.study.springboot.dto.BookStoryBoardDto">
+       select * from bookstory_board where idx =#{idx}
+    </select> 
+    
+     <!--전체 글목록  --> 
+     <select id="bookstoryListDao" resultType="com.study.springboot.dto.BookStoryBoardDto">
+            select * from bookstory_board order by idx desc
+     </select> 
+       
+       
+     <select id="bookstoryAllListDao" resultType="com.study.springboot.dto.BookStoryBoardDto"> 
+		 
+			SELECT *
+			FROM
+		    (
+		        SELECT 
+		            ROWNUM AS RNUM, bookstory_board.*
+		        FROM
+		            bookstory_board
+		        ORDER BY idx desc
+       	    )
+			WHERE
+	    	idx BETWEEN #{param1} AND #{param2}
+     </select> 
+     
+   
+      
+     <select id="bookStoryCategoryDao" resultType="com.study.springboot.dto.BookStoryBoardDto">
+         SELECT *
+			FROM
+		    (
+		        SELECT 
+		            ROWNUM AS RNUM, bookstory_board.*
+		        FROM
+		            bookstory_board where bs_category=#{param1}
+		        ORDER BY idx desc
+       	    )
+			WHERE
+	    	RNUM BETWEEN #{param2} AND #{param3}
+     </select>  
+      
+       <select id="bookStoryCategory2Dao" resultType="com.study.springboot.dto.BookStoryBoardDto">
+         SELECT *
+			FROM
+		    (
+		        SELECT 
+		            ROWNUM AS RNUM, bookstory_board.*
+		        FROM
+		            bookstory_board where bs_category=#{param1}
+		        ORDER BY idx desc
+       	    )
+			WHERE
+	    	RNUM BETWEEN #{param2} AND #{param3}
+     </select>  
+     
+     <select id="bookStoryCategory4Dao" resultType="com.study.springboot.dto.BookStoryBoardDto">
+         SELECT * FROM bookstory_board bs_category order by idx desc
+		  
+     </select>  
+     
+      
+      
+     
+      
+     <!-- 인기글목록 -->
+  	 <select id="bookstory_mainpopularListDao" resultType="com.study.springboot.dto.BookStoryBoardDto">
+         select * from bookstory_board order by hit desc
+     </select>  
+      
+     
+     <delete id="bookstoryDeleteDao">
+   			delete from bookstory_board where idx=#{param1}
+     </delete>
+    
+     <update id="bookstoryUpdateDao"  parameterType="com.study.springboot.dto.BookStoryBoardDto">
+   			update  bookstory_board set bs_category=#{bs_category} , bs_title =#{bs_title} ,bs_content=#{bs_content} where idx=#{idx}
+     </update> 
+     
+      
+     <!-- 댓글  -->
+     <insert id="bookstoryRelpyWriteDao" parameterType="com.study.springboot.dto.BookStoryBoardReplyDto">
+        insert into bookstoryboard_reply ( reply_no,  idx, reply_category, reply_writer, reply_content,reply_profile, reg)
+             values (bookstoryboard_reply_seq.nextval, #{idx}, #{reply_category}, #{reply_writer}, #{reply_content}, #{reply_profile}, #{reg})
+     </insert>
+  
+   	 <select id="bookstoryReplyViewDao" resultType="com.study.springboot.dto.BookStoryBoardReplyDto">
+            select * from bookstoryboard_reply where idx=#{param1} order by reg asc
+     </select>  
+   
+   
+   	 <delete id="bookStoryReplyDeleteDao" >
+            delete from bookstoryboard_reply where reply_no=#{param1}
+     </delete>  
+     
+   	 <select id="bookStoryReplyCountDao" resultType="com.study.springboot.dto.BookStoryBoardReplyDto">
+            select * from bookstoryboard_reply where idx=#{param1}
+     </select>  
+     
+     
+     <!-- 관리자 --> 
+    
+    <select id="contents_countDao" resultType="com.study.springboot.dto.BookStoryBoardDto">
+            select * from bookstory_board where bs_user_id=#{param1}
+    </select> 
+   
+    <select id="replys_countDao" resultType="com.study.springboot.dto.BookStoryBoardReplyDto">
+            select * from bookstoryboard_reply where reply_writer=#{param1}
+    </select> 
+    
+    <!-- 좋아요기능 -->
+    <update id="bookstoryLike_checkDao" parameterType="com.study.springboot.dto.BookStoryBoardDto">
+    		update bookstory_board set like_check= #{param2}+1 where idx=#{param1}
+    </update>
+    
+    <update id="bookstorylike_check_cancleDao" parameterType="com.study.springboot.dto.BookStoryBoardDto">
+    		update bookstory_board set like_check= #{param2}-1 where idx=#{param1}
+    </update>
+    
+    <update id="bookstorylike_cntupDao" parameterType="com.study.springboot.dto.BookStoryBoardDto">
+   		update bookstory_board set like_cnt= #{param2}+1 where idx=#{param1}
+    </update>
+   
+    <update id="bookstorylike_cntdownDao" parameterType="com.study.springboot.dto.BookStoryBoardDto">
+   		update bookstory_board set like_cnt= #{param2}-1 where idx=#{param1}
+    </update>
+    
+    
+    
+    
+</mapper>

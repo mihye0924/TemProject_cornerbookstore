@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+.termsofuse_head{
+    padding-top: 30px;
+    text-align: center;
+    font-size: 30px;
+}
+.termofuse_form{
+    margin: 0 auto;
+    width: 1000px;
+    border: 1px solid gray; 
+    height: 700px;
+    
+    overflow-x: hidden; 
+    overflow-y: scroll;
+}
+ 
+/* *{border: 1px solid red} */
+
+
+.foot{
+    margin: 0 auto;
+    width: 1000px;
+    padding-top: 35px; 
+    height: 40px;
+}
+input[type=button]{
+    background-color: #d4b886;  
+}
+input[type=submit]{
+    background-color: #d4b886;  
+}
+
+.button{ 
+    margin: 0 auto;
+    width: 58px;
+    height: 40px;
+}

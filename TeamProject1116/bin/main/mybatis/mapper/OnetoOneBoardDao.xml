@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.study.springboot.dao.IOnetoOneBoardDao"> 
+	 
+   	   <insert id="writeDao" parameterType="com.study.springboot.dto.OnetoOneBoardDto">
+      	<selectKey keyProperty="idx" resultType="int" order="BEFORE">
+           select one_to_one_board_seq.nextval FROM DUAL
+     	</selectKey>
+	       insert into one_to_one_board (idx, o_type, o_phone, user_id, o_title, o_content_Q, o_ans_check, reg )
+	        values (#{idx}, #{o_type}, #{o_phone}, #{user_id}, #{o_title},#{o_content_Q}, #{o_ans_check}, #{reg})
+  	   </insert>
+  	   <select id="listDao" resultType="com.study.springboot.dto.OnetoOneBoardDto">
+  	   	    <![CDATA[ 
+     select idx,o_type,o_phone,user_id,o_title,o_content_q,admin_id,o_content_A,o_ans_check,reg
+     from ( 
+     select 
+     rownum rn, idx,o_type,o_phone,user_id,o_title,o_content_q,admin_id,o_content_A,o_ans_check,reg
+     from one_to_one_board
+     where rownum <= #{cri.pageNum} * #{cri.amount} AND user_id=#{id} 
+     order by reg desc) 
+     where rn > (#{cri.pageNum} -1) * #{cri.amount} AND user_id=#{id} 
+     ]]>
+  	   </select>
+  	   <select id="content_viewDao" resultType="com.study.springboot.dto.OnetoOneBoardDto">
+  	   	   select * from one_to_one_board where idx = #{idx}
+  	   </select>
+  	   <update id="boardModfiyDao" parameterType="com.study.springboot.dto.OnetoOneBoardDto">
+  	   		update one_to_one_board set o_type=#{o_type,jdbcType=VARCHAR}, o_phone=#{o_phone,jdbcType=VARCHAR},o_title=#{o_title,jdbcType=VARCHAR},o_content_Q=#{o_content_Q,jdbcType=VARCHAR}, user_id=#{user_id,jdbcType=VARCHAR} 
+  	   		where idx=#{idx}
+  	   </update>
+  	   <delete id="boardDeleteDao">
+	       	delete from one_to_one_board where idx=#{param1}
+  	   </delete>
+  	   
+  	   <select id="content_replyDao">
+	       	   select * from one_to_one_board where idx = #{idx}
+  	   </select>
+  	   
+  	    <select id="search_userDao" resultType="com.study.springboot.dto.OnetoOneBoardDto"> 
+		
+		select * from one_to_one_board
+	    <choose>
+
+		<when test='param2.equals("배송지연/불만")'>
+		 where user_id=#{param1}  and ( o_title Like '%'||#{param3}||'%' or o_content_q Like '%'||#{param3}||'%' ) order by idx desc
+		</when>	
+
+		<when test='param1.equals("교환문의")'>
+		where o_title Like '%'||#{param2}||'%' or o_content_q Like '%'||#{param2}||'%' or user_id =#{user_id} order by idx desc
+		</when>
+		<when test='param1.equals("반품문의")'>
+		where o_title Like '%'||#{param2}||'%' or o_content_q Like '%'||#{param2}||'%' or user_id =#{user_id} order by idx desc
+		</when>
+		<when test='param1.equals("상품손상")'>
+		where o_title Like '%'||#{param2}||'%' or o_content_q Like '%'||#{param2}||'%' or user_id =#{user_id} order by idx desc
+		</when>
+		<when test='param1.equals("주문/결재 문의")'>
+		where o_title Like '%'||#{param2}||'%' or o_content_q Like '%'||#{param2}||'%' or user_id =#{user_id} order by idx desc
+		</when>
+		<when test='param1.equals("입고문의")'>
+		where o_title Like '%'||#{param2}||'%' or o_content_q Like '%'||#{param2}||'%'  or user_id =#{user_id} order by idx desc
+		</when> 
+		<when test='param1.equals("기타")'>
+		where o_title Like '%'||#{param2}||'%' or o_content_q Like '%'||#{param2}||'%'  or user_id =#{user_id} order by idx desc
+		</when>
+		</choose>
+	</select>
+   
+  	   <select id="searchDao" resultType="com.study.springboot.dto.OnetoOneBoardDto"> 
+		
+		select * from ONE_TO_ONE_BOARD
+		<choose>
+		<when test='param1.equals("1")'>
+		where o_title Like '%'||#{param2}||'%' order by idx desc
+		</when>
+		<when test='param1.equals("2")'>
+		where o_title Like '%'||#{param2}||'%' or o_content_q Like '%'||#{param2}||'%' order by idx desc
+		</when>
+		<when test='param1.equals("3")'>
+		where user_id Like '%'||#{param2}||'%' order by idx desc
+		</when>
+		</choose>
+	</select>
+	
+	 <select id="noanswer_userlistDao" resultType="com.study.springboot.dto.OnetoOneBoardDto">
+  	      select * from one_to_one_board where o_ans_check = #{param1} and user_id = #{param2}   order by idx desc
+  	   </select>
+  	     <select id="countMemberDao" resultType="int">
+    select count(*) from one_to_one_board where user_id=#{param1}
+    </select>
+  	   
+  	   <!-- 관리자 1:1문의 -->
+  	   <select id="noanswerlistDao" resultType="com.study.springboot.dto.OnetoOneBoardDto">
+  	      select * from one_to_one_board where o_ans_check = #{param1} order by idx desc
+  	   </select>
+  	     
+  	   <select id="adminlistDao" resultType="com.study.springboot.dto.OnetoOneBoardDto">
+  	      <![CDATA[ 
+     select *
+     from ( 
+     select 
+     rownum rn,idx,o_type,user_id,o_title,o_ans_check,o_content_q,reg
+     from ONE_TO_ONE_BOARD
+     where rownum <= #{pageNum} * #{amount} 
+     order by idx desc) 
+     where rn > (#{pageNum} -1) * #{amount}
+     ]]>
+     </select>
+ <select id="countDao" resultType="int">
+    select count(*) from one_to_one_board
+    </select>
+  	   
+</mapper>
+
